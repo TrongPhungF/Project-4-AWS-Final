@@ -37,7 +37,6 @@ jobs:
         run: npm install
         working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
 
-
       - name: Run linter
         run: npm run lint
         working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
@@ -63,11 +62,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: /starter/frontend/
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
 
       - name: Run tests
         run: npm run test
-        working-directory: /starter/frontend/
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
 
   build:
     needs: [lint, test]
@@ -91,7 +90,9 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
 
-      - name: Build with Docker
+      - name: Run tests
         run: npm run test
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
