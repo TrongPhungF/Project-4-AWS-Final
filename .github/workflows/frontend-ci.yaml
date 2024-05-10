@@ -34,10 +34,13 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: cd /starter/frontend/ && npm install
+        run: npm install
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+
 
       - name: Run linter
-        run: cd /starter/frontend/ && npm run lint
+        run: npm run lint
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
 
   test:
     runs-on: ubuntu-latest
