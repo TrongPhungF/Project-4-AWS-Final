@@ -32,18 +32,12 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Install dependencies
-        run: ls
-        working-directory: /starter/frontend/
 
       - name: Install dependencies
-        run: npm install
-        working-directory: /starter/frontend/
-
+        run: cd /starter/frontend/ && npm install
 
       - name: Run linter
-        run: npm run lint
-        working-directory: /starter/frontend/
+        run: cd /starter/frontend/ && npm run lint
 
   test:
     runs-on: ubuntu-latest
