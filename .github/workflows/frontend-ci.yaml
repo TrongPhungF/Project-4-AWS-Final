@@ -4,12 +4,15 @@ on:
   pull_request:
     branches:
       - main
+  push_request:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
   # Set Node.js Version
   NODE_VERSION: '18.x'
-
+  SRC_FE: '/starter/frontend'
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -33,9 +36,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: /starter/frontend/
+
 
       - name: Run linter
         run: npm run lint
+        working-directory: /starter/frontend/
 
   test:
     runs-on: ubuntu-latest
@@ -58,9 +64,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: /starter/frontend/
 
       - name: Run tests
         run: npm run test
+        working-directory: /starter/frontend/
 
   build:
     needs: [lint, test]
