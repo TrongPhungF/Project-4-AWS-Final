@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - 'frontend/**' # Only trigger when backend files change
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
