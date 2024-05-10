@@ -1,57 +1,90 @@
-# Workflow name
 name: ci-frontend-workflow
 
-# Triggers for the workflow
 on:
-  # Manual trigger using the workflow_dispatch event
-  workflow_dispatch:
-
-  # Automatic trigger on pull request events targeting the main branch
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
+env:
+  # Set Node.js Version
+  NODE_VERSION: '18.x'
 
-# Jobs defined in the workflow
 jobs:
-  build-and-test-1:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: latest
-      - name: Print a message for main branch
-        if: github.ref == 'refs/heads/main'
-        run: echo "This is the main branch."
-      - name: Print a message for non-main branches
-        if: github.ref != 'refs/heads/main'
-        run: echo "This is not the main branch."
-      - name: Run tests
-        run: npm test
-      - name: Debug message
-        if: env.DEBUG == 'true'
-        run: echo "Debugging is enabled."
 
-  build-and-test-2:
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Set up Node.js
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: latest
-      - name: Print a message for main branch
-        if: github.ref == 'refs/heads/main'
-        run: echo "This is the main branch."
-      - name: Print a message for non-main branches
-        if: github.ref != 'refs/heads/main'
-        run: echo "This is not the main branch."
+          node-version: ${{env.NODE_VERSION}}
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Run tests
-        run: npm test
-      - name: Debug message
-        if: env.DEBUG == 'true'
-        run: echo "Debugging is enabled."
+        run: npm run test
+
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with Docker
+        run: npm run test
