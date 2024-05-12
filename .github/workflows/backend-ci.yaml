@@ -40,7 +40,7 @@ jobs:
         working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Install dependencies
-        run: pipenv install
+        run: pipenv install --dev
         working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Run the lint
@@ -71,7 +71,7 @@ jobs:
         working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Install dependencies
-        run: pipenv install
+        run: pipenv install --dev
         working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Run tests
@@ -104,7 +104,7 @@ jobs:
         working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Install dependencies
-        run: pipenv install
+        run: pipenv install --dev
         working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Run tests
