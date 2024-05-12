@@ -37,12 +37,15 @@ jobs:
 
       - name: Install pipenv
         run: pip install pipenv
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Install dependencies
         run: pipenv install
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Run the lint
         run: pipenv run lint
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
   test:
     runs-on: ubuntu-latest
@@ -65,12 +68,15 @@ jobs:
 
       - name: Install pipenv
         run: pip install pipenv
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Install dependencies
         run: pipenv install
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Run tests
         run: pipenv run test
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
   build:
     needs: [lint, test]
@@ -95,9 +101,12 @@ jobs:
 
       - name: Install pipenv
         run: pip install pipenv
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Install dependencies
         run: pipenv install
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
 
       - name: Run tests
         run: pipenv run test
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
