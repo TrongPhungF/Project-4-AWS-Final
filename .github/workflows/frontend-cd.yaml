@@ -7,9 +7,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  lint-and-test:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+
+      - name: Run linter
+        run: npm run lint
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+
+      - name: Run tests
+        run: npm run test
+        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+
+  deploy:
+    needs: [lint-and-test]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -31,7 +62,7 @@ jobs:
           tags: 741704027807.dkr.ecr.us-east-1.amazonaws.com/frontend:latest
 
       - name: Set up kubectl
-        uses: azure/setup-kubectl@v2
+        uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
 
