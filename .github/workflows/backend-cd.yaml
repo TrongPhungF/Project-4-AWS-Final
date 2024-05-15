@@ -1,14 +1,10 @@
-name: cd-frontend-workflow
+ame: cd-backend-workflow
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-  workflow_run:
-    workflows: ["ci-backend-workflow"]
-    types:
-      - completed
 
 jobs:
   deploy:
