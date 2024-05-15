@@ -4,11 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'frontend/**' # Only trigger when backend files change
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 env:
