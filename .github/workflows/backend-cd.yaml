@@ -1,4 +1,4 @@
-ame: cd-backend-workflow
+name: cd-backend-workflow
 
 on:
   push:
