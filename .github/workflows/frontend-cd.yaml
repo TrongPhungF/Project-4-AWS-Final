@@ -80,14 +80,14 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
   push-ecr:
-  needs: login-ecr
-  runs-on: ubuntu-latest
-  steps:
+    needs: login-ecr
+    runs-on: ubuntu-latest
+    steps:
 
-    - name: Push to ECR
-      run: |
-        docker tag ${{ vars.ECR_REPOSITORY_FE }}:latest ${{ vars.ECR_REPOSITORY_FE }}:latest
-        docker push ${{ vars.ECR_REPOSITORY_FE }}:latest
+      - name: Push to ECR
+        run: |
+          docker tag ${{ vars.ECR_REPOSITORY_FE }}:latest ${{ vars.ECR_REPOSITORY_FE }}:latest
+          docker push ${{ vars.ECR_REPOSITORY_FE }}:latest
 
 #  deploy:
 #    needs: push-ecr
