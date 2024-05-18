@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{env.NODE_VERSION}}
+          node-version: ${{vars.NODE_VERSION}}
 
       - name: Cache node modules
         uses: actions/cache@v3
@@ -27,20 +27,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: echo
-        run: | 
-              echo "${{env.WORKING_DIRECTORY_FE}} $WORKING_DIRECTORY_FE ${{env.NODE_VERSION}}"
-
-      - name: echo
-        run: ls -l /
-
       - name: Install dependencies
         run: npm install
-        working-directory: ${{env.WORKING_DIRECTORY_FE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
       - name: Run linter
         run: npm run lint
-        working-directory: ${{env.WORKING_DIRECTORY_FE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
   test:
     needs: lint
@@ -52,7 +45,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{env.NODE_VERSION}}
+          node-version: ${{vars.NODE_VERSION}}
 
       - name: Cache node modules
         uses: actions/cache@v3
@@ -64,11 +57,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ${{env.WORKING_DIRECTORY_FE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
       - name: Run tests
         run: npm run test
-        working-directory: ${{env.WORKING_DIRECTORY_FE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
   build:
     needs: test
@@ -81,7 +74,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{env.NODE_VERSION}}
+          node-version: ${{vars.NODE_VERSION}}
 
       - name: Cache node modules
         uses: actions/cache@v3
@@ -93,8 +86,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ${{env.WORKING_DIRECTORY_FE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
       - name: Run tests
         run: npm run test
-        working-directory: ${{env.WORKING_DIRECTORY_FE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_FE}}
