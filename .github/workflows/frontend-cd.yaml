@@ -6,9 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  WORKING_DIRECTORY_BE: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
-  NODE_VERSION: '18.x'
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -19,15 +16,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{env.NODE_VERSION}}
+          node-version: ${{vars.NODE_VERSION}}
 
       - name: Install dependencies
         run: npm install
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Run linter
         run: npm run lint
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
   test:
     runs-on: ubuntu-latest
@@ -39,15 +36,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{env.NODE_VERSION}}
+          node-version: ${{vars.NODE_VERSION}}
 
       - name: Install dependencies
         run: npm install
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Run tests
         run: npm run test
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
   build:
     needs: test
@@ -63,7 +60,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-          -t ${{ env.ECR_REPOSITORY_FE }}:latest .
+          -t ${{ vars.ECR_REPOSITORY_FE }}:latest .
 
   login-ecr:
     needs: build
@@ -76,7 +73,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -86,13 +83,11 @@ jobs:
   needs: login-ecr
   runs-on: ubuntu-latest
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
 
     - name: Push to ECR
       run: |
-        docker tag ${{ env.ECR_REPOSITORY_FE }}:latest ${{ env.ECR_REPOSITORY_FE }}:latest
-        docker push ${{ env.ECR_REPOSITORY_FE }}:latest
+        docker tag ${{ vars.ECR_REPOSITORY_FE }}:latest ${{ vars.ECR_REPOSITORY_FE }}:latest
+        docker push ${{ vars.ECR_REPOSITORY_FE }}:latest
 
 #  deploy:
 #    needs: push-ecr
@@ -103,14 +98,14 @@ jobs:
 #          with:
 #            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
 #            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#            aws-region: ${{ env.AWS_REGION }}
+#            aws-region: ${{ vars.AWS_REGION }}
 #            - name: Setup kubectl
 #              uses: azure/setup-kubectl@v1
 #              with:
 #                version: 'v1.21.0'
 #            - name: Update Kubernetes deployment
 #              run: |
-#                kubectl set image deployment/${{ env.DEPLOYMENT_NAME }} ${{ env.CONTAINER_NAME }}=${{ env.ECR_REPOSITORY }}:latest
+#                kubectl set image deployment/${{ vars.DEPLOYMENT_NAME }} ${{ vars.CONTAINER_NAME }}=${{ vars.ECR_REPOSITORY }}:latest
 #
 #      - name: Deploy to Kubernetes
 #        run: |
