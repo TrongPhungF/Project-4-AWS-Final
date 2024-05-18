@@ -6,11 +6,8 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  # Set Node.js Version
-  PYTHON_VERSION: '3.10'
-
 jobs:
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -32,15 +29,15 @@ jobs:
 
       - name: Install pipenv
         run: pip install pipenv
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
       - name: Install dependencies
         run: pipenv install --dev
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
       - name: Run the lint
         run: pipenv run lint
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
   test:
     runs-on: ubuntu-latest
@@ -63,15 +60,15 @@ jobs:
 
       - name: Install pipenv
         run: pip install pipenv
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
       - name: Install dependencies
         run: pipenv install --dev
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
       - name: Run tests
         run: pipenv run test
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
   build:
     needs: [lint, test]
@@ -96,12 +93,12 @@ jobs:
 
       - name: Install pipenv
         run: pip install pipenv
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
       - name: Install dependencies
         run: pipenv install --dev
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
       - name: Run tests
         run: pipenv run test
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/backend/
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}

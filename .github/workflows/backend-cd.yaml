@@ -6,16 +6,93 @@ on:
       - main
   workflow_dispatch:
 
+env:
+
 jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          node-version: ${{env.PYTHON_VERSION}}
+
+      - name: Cache pipenv virtual environment
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pipenv-
+
+      - name: Install pipenv
+        run: pip install pipenv
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+
+      - name: Install dependencies
+        run: pipenv install --dev
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+
+      - name: Run the lint
+        run: pipenv run lint
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          node-version: ${{env.PYTHON_VERSION}}
+
+      - name: Cache pipenv virtual environment
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pipenv-
+
+      - name: Install pipenv
+        run: pip install pipenv
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+
+      - name: Install dependencies
+        run: pipenv install --dev
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+
+      - name: Run tests
+        run: pipenv run test
+        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ${{ env.ECR_REPOSITORY }}:latest .
+
   deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1

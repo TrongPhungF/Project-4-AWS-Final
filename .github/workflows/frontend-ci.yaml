@@ -6,9 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  # Set Node.js Version
-  NODE_VERSION: '18.x'
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -32,13 +29,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+        working-directory: ${{env.WORKING_DIRECTORY_FE}}
 
       - name: Run linter
         run: npm run lint
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+        working-directory: ${{env.WORKING_DIRECTORY_FE}}
 
   test:
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -59,14 +57,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+        working-directory: ${{env.WORKING_DIRECTORY_FE}}
 
       - name: Run tests
         run: npm run test
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+        working-directory: ${{env.WORKING_DIRECTORY_FE}}
 
   build:
-    needs: [lint, test]
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
@@ -88,8 +86,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+        working-directory: ${{env.WORKING_DIRECTORY_FE}}
 
       - name: Run tests
         run: npm run test
-        working-directory: /home/runner/work/Project-4-AWS-Final/Project-4-AWS-Final/starter/frontend/
+        working-directory: ${{env.WORKING_DIRECTORY_FE}}
