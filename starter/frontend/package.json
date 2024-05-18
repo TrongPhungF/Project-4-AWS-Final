@@ -42,8 +42,11 @@
   "devDependencies": {
     "enzyme": "^3.11.0",
     "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "prettier": "^2.8.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.18.6"
   }
 }
