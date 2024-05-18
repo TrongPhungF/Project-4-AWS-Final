@@ -29,15 +29,18 @@ jobs:
 
       - name: echo
         run: | 
-              echo ${{ env.WORKING_DIRECTORY_FE }}
+              echo ${{env.WORKING_DIRECTORY_FE}} ${{env.NODE_VERSION}}
+
+      - name: echo
+        run: ls -l /
 
       - name: Install dependencies
         run: npm install
-        working-directory: ${{ env.WORKING_DIRECTORY_FE }}
+        working-directory: ${{env.WORKING_DIRECTORY_FE}}
 
       - name: Run linter
         run: npm run lint
-        working-directory: ${{ env.WORKING_DIRECTORY_FE }}
+        working-directory: ${{env.WORKING_DIRECTORY_FE}}
 
   test:
     needs: lint
