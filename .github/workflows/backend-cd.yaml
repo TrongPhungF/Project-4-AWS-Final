@@ -6,8 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-
 jobs:
 
   lint:
@@ -74,6 +72,7 @@ jobs:
         working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
 
