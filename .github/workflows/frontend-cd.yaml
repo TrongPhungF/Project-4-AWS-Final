@@ -61,8 +61,11 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-          -t ${{ vars.ECR_REPOSITORY_FE }}:latest .
+          -t ${{ vars.IMAGES_NAME_FE }}:latest .
         working-directory: ${{vars.WORKING_DIRECTORY_FE}}
+
+      - name: List Docker images for debugging
+        run: docker images
 
   login-ecr:
     needs: build
@@ -88,8 +91,8 @@ jobs:
 
       - name: Push to ECR
         run: |
-          docker tag ${{ vars.ECR_REPOSITORY_FE }}:latest ${{ vars.ECR_REPOSITORY_FE }}:latest
-          docker push ${{ vars.ECR_REPOSITORY_FE }}:latest
+          docker tag ${{ vars.ECR_REPOSITORY_FE }}:latest ${{ vars.ECR_REPOSITORY_FE }}/${{ vars.IMAGES_NAME_FE }}:latest
+          docker push ${{ vars.ECR_REPOSITORY_FE }}/${{ vars.IMAGES_NAME_FE }}:latest
 
   deploy:
     needs: push-ecr
