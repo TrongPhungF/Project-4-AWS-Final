@@ -81,8 +81,21 @@ jobs:
         run: |
           export API_BE=$(kubectl get svc backend -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
+      - name: Get external IP of backend service
+        id: get_external_ip
+        run: |
+          API_BE=$(kubectl get svc backend -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          if [ -z "$API_BE" ]; then
+            API_BE=$(kubectl get svc backend -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          fi
+          echo "API_BE=$API_BE" >> $GITHUB_ENV
+          echo "Retrieved API backend IP/Hostname: $API_BE"
+
       - name: Output external IP
         run: echo "External IP of backend service is ${{ env.API_BE }}"
+
+      - name: IP backend
+        run: echo ${{env.API_BE}}
 
       - name: Build Docker image
         run: |
