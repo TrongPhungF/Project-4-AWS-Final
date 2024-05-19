@@ -69,7 +69,7 @@ jobs:
 
       - name: Run tests
         run: pipenv run test
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
   build:
     needs: test
