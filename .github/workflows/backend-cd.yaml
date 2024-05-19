@@ -112,8 +112,8 @@ jobs:
 
       - name: Push to ECR
         run: |
-          docker tag ${{ vars.ECR_REPOSITORY_FE }}:latest ${{ vars.ECR_REPOSITORY_FE }}:latest
-          docker push ${{ vars.ECR_REPOSITORY_FE }}:latest
+          docker tag ${{ vars.IMAGES_NAME_BE }}:latest ${{ vars.ECR_REPOSITORY_BE }}:latest
+          docker push ${{ vars.ECR_REPOSITORY_BE }}:latest
 
   deploy:
     needs: push-ecr
