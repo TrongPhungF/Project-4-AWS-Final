@@ -29,15 +29,15 @@ jobs:
 
       - name: Install pipenv
         run: pip install pipenv
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Install dependencies
         run: pipenv install --dev
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Run the lint
         run: pipenv run lint
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
   test:
     needs: lint
@@ -49,7 +49,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v3
         with:
-          node-version: ${{env.PYTHON_VERSION}}
+          node-version: ${{vars.PYTHON_VERSION}}
 
       - name: Cache pipenv virtual environment
         uses: actions/cache@v3
@@ -61,11 +61,11 @@ jobs:
 
       - name: Install pipenv
         run: pip install pipenv
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Install dependencies
         run: pipenv install --dev
-        working-directory: ${{env.WORKING_DIRECTORY_BE}}
+        working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Run tests
         run: pipenv run test
