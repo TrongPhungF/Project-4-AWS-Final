@@ -113,6 +113,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: List Docker images
+        run: docker images
+
       - name: Push to ECR
         run: |
           docker push ${{ vars.ECR_REPOSITORY_FE }}/${{ vars.IMAGES_NAME_FE }}:latest
