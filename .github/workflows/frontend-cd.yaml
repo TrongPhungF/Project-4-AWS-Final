@@ -64,7 +64,7 @@ jobs:
           -t ${{ vars.IMAGES_NAME_FE }}:latest .
         working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
-      - name: List Docker images for debugging
+      - name: List Docker images
         run: docker images
 
   login-ecr:
@@ -91,8 +91,7 @@ jobs:
 
       - name: Push to ECR
         run: |
-          docker tag ${{ vars.IMAGES_NAME_FE }}:latest ${{ vars.IMAGES_NAME_FE }}/${{ vars.ECR_REPOSITORY_FE }}:latest
-          docker push ${{ vars.IMAGES_NAME_FE }}/${{ vars.ECR_REPOSITORY_FE }}:latest
+          docker push ${{ vars.ECR_REPOSITORY_FE }}/${{ vars.IMAGES_NAME_FE }}:latest
 
   deploy:
     needs: push-ecr
