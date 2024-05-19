@@ -74,8 +74,16 @@ jobs:
       - name: Setup cluster
         run: aws eks --region ${{vars.AWS_REGION}} update-kubeconfig --name ${{vars.CLUSTER_NAME}}
 
-      - name: Setup cluster
-        run: export EXTERNALIP=$(kubectl get svc backend -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}{.status.loadBalancer[0].ip}')
+      - name: get EXTERNALIP BE
+        run: |
+          EXTERNALIP=$(kubectl get svc backend -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          if [ -z "EXTERNALIP" ]; then
+            EXTERNALIP=$(kubectl get svc backend -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          fi
+          echo "EXTERNALIP=EXTERNALIP" >> $GITHUB_ENV
+
+      - name: Output external IP
+        run: echo "External IP of backend service is ${{ env.EXTERNALIP }}"
 
       - name: IP backend
         run: echo $EXTERNALIP
@@ -83,7 +91,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-          --build-arg REACT_APP_MOVIE_API_URL=http://$EXTERNALIP
+          --build-arg REACT_APP_MOVIE_API_URL=https://$EXTERNALIP
           -t ${{ vars.IMAGES_NAME_FE }}:latest .
         working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
