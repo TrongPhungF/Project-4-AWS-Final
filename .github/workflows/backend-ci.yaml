@@ -32,7 +32,7 @@ jobs:
         working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Install dependencies
-        run: pipenv install --dev
+        run: pipenv install
         working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Run the lint
@@ -64,7 +64,7 @@ jobs:
         working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Install dependencies
-        run: pipenv install --dev
+        run: pipenv install
         working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
       - name: Run tests
