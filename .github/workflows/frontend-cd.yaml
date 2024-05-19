@@ -79,22 +79,18 @@ jobs:
 
       - name: get EXTERNALIP BE
         run: |
-          EXTERNALIP=$(kubectl get svc backend -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-          if [ -z "EXTERNALIP" ]; then
-            EXTERNALIP=$(kubectl get svc backend -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-          fi
-          echo "EXTERNALIP=EXTERNALIP" >> $GITHUB_ENV
+          export API_BE=$(kubectl get svc backend -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
       - name: Output external IP
-        run: echo "External IP of backend service is ${{ env.EXTERNALIP }}"
+        run: echo "External IP of backend service is ${{env.API_BE}}"
 
       - name: IP backend
-        run: echo $EXTERNALIP
+        run: echo ${{env.API_BE}}
 
       - name: Build Docker image
         run: |
           docker build \
-          --build-arg REACT_APP_MOVIE_API_URL=https://$EXTERNALIP \
+          --build-arg REACT_APP_MOVIE_API_URL=https://${{env.API_BE}} \
           -t ${{ vars.IMAGES_NAME_FE }}:latest .
         working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
