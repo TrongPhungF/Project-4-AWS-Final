@@ -87,7 +87,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-          --build-arg REACT_APP_MOVIE_API_URL=https://${{env.API_BE}} \
+          --build-arg REACT_APP_MOVIE_API_URL=http://${{env.API_BE}} \
           -t ${{ vars.IMAGES_NAME_FE }}:latest .
         working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
