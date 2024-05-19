@@ -74,6 +74,9 @@ jobs:
       - name: Setup cluster
         run: aws eks --region ${{vars.AWS_REGION}} update-kubeconfig --name ${{vars.CLUSTER_NAME}}
 
+      - name: cluster
+        run: kubectl get svc backend
+
       - name: get EXTERNALIP BE
         run: |
           EXTERNALIP=$(kubectl get svc backend -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
@@ -91,7 +94,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-          --build-arg REACT_APP_MOVIE_API_URL=https://$EXTERNALIP
+          --build-arg REACT_APP_MOVIE_API_URL=https://$EXTERNALIP \
           -t ${{ vars.IMAGES_NAME_FE }}:latest .
         working-directory: ${{vars.WORKING_DIRECTORY_FE}}
 
