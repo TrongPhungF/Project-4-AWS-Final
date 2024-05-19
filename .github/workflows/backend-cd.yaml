@@ -64,7 +64,7 @@ jobs:
         working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
       - name: Install dependencies
-        run: pipenv install
+        run: pipenv install --dev
         working-directory: ${{env.WORKING_DIRECTORY_BE}}
 
       - name: Run tests
