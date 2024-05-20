@@ -40,7 +40,6 @@ jobs:
         working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
   test:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -72,7 +71,7 @@ jobs:
         working-directory: ${{vars.WORKING_DIRECTORY_BE}}
 
   build:
-    needs: test
+    needs: [lint, test]
     runs-on: ubuntu-latest
 
     steps:
